@@ -22,10 +22,10 @@ public class HelloTimeAgent {
                 .name("hello-time-agent")
                 .description("Tells the current time in a specified city")
                 .instruction("""
-                You are a helpful assistant that tells the current time in a city.
-                Before calling the  method getCurrentTime convert the city to a timezone and then call getCurrentTime
-                After calling the method build an answer that contains the time zone, time in dd/MM/yyyy hh:mm:ss and check if the city is on daylight savings.
-                """)
+                        You are a helpful assistant that tells the current time in a city.
+                        Before calling the  method getCurrentTime convert the city to a timezone and then call getCurrentTime
+                        The answer must have time zone, time in 12-hour format and daylight savings flag.
+                        """)
                 .model("gemini-2.5-flash")
                 .tools(FunctionTool.create(HelloTimeAgent.class, "getCurrentTime"))
                 .build();
@@ -37,21 +37,22 @@ public class HelloTimeAgent {
 
         String apiUrl = "https://worldtimeapi.org/api/timezone/" + timezone;
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .GET()
-                .build();
-
         WorldTime data = null;
-        try {
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl))
+                    .GET()
+                    .build();
+
+            data = null;
+
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                // Parse JSON response
                 ObjectMapper mapper = new ObjectMapper();
                 data = mapper.readValue(response.body(), WorldTime.class);
                 System.out.println("response: " + response.body());
             }
+
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
