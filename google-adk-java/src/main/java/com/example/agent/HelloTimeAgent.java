@@ -25,6 +25,7 @@ public class HelloTimeAgent {
                         You are a helpful assistant that tells the current time in a city.
                         Before calling the  method getCurrentTime convert the city to a timezone and then call getCurrentTime
                         The answer must have time zone, time in 12-hour format and daylight savings flag.
+                        Add a paragraph with fun facts about the city.
                         """)
                 .model("gemini-2.5-flash")
                 .tools(FunctionTool.create(HelloTimeAgent.class, "getCurrentTime"))
@@ -50,7 +51,6 @@ public class HelloTimeAgent {
             if (response.statusCode() == 200) {
                 ObjectMapper mapper = new ObjectMapper();
                 data = mapper.readValue(response.body(), WorldTime.class);
-                System.out.println("response: " + response.body());
             }
 
         } catch (Exception e) {
