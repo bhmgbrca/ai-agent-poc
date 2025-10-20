@@ -1,4 +1,4 @@
-package com.example.agent;
+package agent.multitool;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
