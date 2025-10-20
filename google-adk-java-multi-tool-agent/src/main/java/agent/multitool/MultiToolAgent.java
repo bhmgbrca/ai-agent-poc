@@ -24,10 +24,12 @@ public class MultiToolAgent {
                 .model("gemini-2.0-flash")
                 .description("Agent to answer questions about the time and weather in a city.")
                 .instruction("""
-                        You are a helpful assistant that tells the current time and weather in a city. 
+                        You are a helpful assistant that tells the current time and weather in a city.
+                        In the end combine the two answers in one.
                         Before calling the method getCurrentTime convert the city to a timezone and then call getCurrentTime
+                        Observe the daylight saving is represented as dst in the answer for the getCurrentTime
                         After that get the city lat long and call the getWeather.
-                        The answer must have time zone, time in 12-hour format and daylight savings flag.
+                        The answer must have time zone, time in 12-hour format and daylight savings (dst)
                         Add weather jokes to the weather report
                         """)
                 .tools(
@@ -42,7 +44,7 @@ public class MultiToolAgent {
 
         String apiUrl = "https://worldtimeapi.org/api/timezone/" + timezone;
 
-        WorldTime data = null;
+        String data = null;
         try (HttpClient client = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(apiUrl))
@@ -50,8 +52,7 @@ public class MultiToolAgent {
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                ObjectMapper mapper = new ObjectMapper();
-                data = mapper.readValue(response.body(), WorldTime.class);
+                data = response.body();
             }
 
         } catch (Exception e) {
@@ -60,7 +61,7 @@ public class MultiToolAgent {
 
         return Map.of(
                 "timezone", timezone,
-                "forecast", data != null ? String.format("The time is: %s, Daylight Savings", data.datetime(), data.dst()) : "Timezone not found"
+                "forecast", data != null ? data : "Timezone not found"
         );
     }
 
@@ -82,13 +83,16 @@ public class MultiToolAgent {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 data = response.body();
-                System.out.println("data: " + data);
             }
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        return Map.of("status","success","report", data);
+        if(data != null) {
+            return Map.of("status", "success", "report", data);
+        }else{
+            return Map.of("status", "error", "report", "Weather information not available");
+        }
     }
 }
