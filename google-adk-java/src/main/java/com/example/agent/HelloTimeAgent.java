@@ -23,7 +23,7 @@ public class HelloTimeAgent {
                 .description("Tells the current time in a specified city")
                 .instruction("""
                         You are a helpful assistant that tells the current time in a city.
-                        Before calling the  method getCurrentTime convert the city to a timezone and then call getCurrentTime
+                        Before calling the method getCurrentTime convert the city to a timezone and then call getCurrentTime
                         The answer must have time zone, time in 12-hour format and daylight savings flag.
                         Add a paragraph with fun facts about the city.
                         """)
@@ -44,8 +44,6 @@ public class HelloTimeAgent {
                     .uri(URI.create(apiUrl))
                     .GET()
                     .build();
-
-            data = null;
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
