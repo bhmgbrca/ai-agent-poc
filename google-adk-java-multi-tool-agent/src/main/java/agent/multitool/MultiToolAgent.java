@@ -69,8 +69,6 @@ public class MultiToolAgent {
             @Schema(name = "latitude", description = "The latitude of the city") double latitude,
             @Schema(name = "longitude", description = "The longitude of the city") double longitude) {
 
-        System.out.println("getWeather called");
-        System.out.println("lat=" + latitude + ", lon=" + longitude);
         String apiUrl = "https://weather.googleapis.com/v1/currentConditions:lookup?key=" + System.getenv("GOOGLE_CLOUD_API_KEY") + "&location.latitude=" + latitude + "&location.longitude=" + longitude;
 
         String data = null;
