@@ -72,7 +72,6 @@ public class MultiToolAgent {
         System.out.println("getWeather called");
         System.out.println("lat=" + latitude + ", lon=" + longitude);
         String apiUrl = "https://weather.googleapis.com/v1/currentConditions:lookup?key="+System.getenv("GOOGLE_CLOUD_API_KEY")+"&location.latitude="+latitude+"&location.longitude="+longitude;
-        // curl -X GET "https://weather.googleapis.com/v1/forecast/days:lookup?key=API_KEY&location.latitude=37.4220&location.longitude=-122.0841&days=2
 
         String data = null;
         try (HttpClient client = HttpClient.newHttpClient()) {
