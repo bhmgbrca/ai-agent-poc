@@ -34,7 +34,7 @@ The goal is to explore **agent SDK behaviors**, documentation quality, and integ
    Create a `.env` file containing your API key:
 
     ```bash
-    echo 'export GOOGLE_API_KEY="YOUR_API_KEY"' > .env
+    export GOOGLE_API_KEY="YOUR_API_KEY"
     ```
 
    Replace `"YOUR_API_KEY"` with your actual Google API key.  
@@ -86,8 +86,7 @@ This code is adapted from the [Google ADK "Get Started" Java tutorial](https://g
 
 > Some parts of the code and configuration are derived from Google’s official examples for educational and research purposes.
 
-**License:** MIT (recommended — add a `LICENSE` file)  
-See the [pull request](https://github.com/bhmgbrca/ai-agent-poc/pull/1) for context and initial implementation.
+**License:** MIT (recommended — add a `LICENSE` file)
 
 ---
 
