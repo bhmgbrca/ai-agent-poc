@@ -11,8 +11,8 @@ It showcases how to define, register, and invoke multiple tools from a single ag
 
 ### Prerequisites
 
-- **Java 21** or higher
-- **Maven** (build tool)
+- **Java 21**
+- **Maven**
 - A valid **Google API Key** from [Google AI Studio](https://aistudio.google.com/app/apikey)
 
 ---
