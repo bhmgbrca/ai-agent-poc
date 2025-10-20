@@ -1,6 +1,5 @@
 package agent.multitool;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
 import com.google.adk.tools.Annotations.Schema;
@@ -21,7 +20,7 @@ public class MultiToolAgent {
     public static BaseAgent initAgent() {
         return LlmAgent.builder()
                 .name(NAME)
-                .model("gemini-2.0-flash")
+                .model("gemini-2.5-flash")
                 .description("Agent to answer questions about the time and weather in a city.")
                 .instruction("""
                         You are a helpful assistant that tells the current time and weather in a city.
@@ -72,7 +71,7 @@ public class MultiToolAgent {
 
         System.out.println("getWeather called");
         System.out.println("lat=" + latitude + ", lon=" + longitude);
-        String apiUrl = "https://weather.googleapis.com/v1/currentConditions:lookup?key="+System.getenv("GOOGLE_CLOUD_API_KEY")+"&location.latitude="+latitude+"&location.longitude="+longitude;
+        String apiUrl = "https://weather.googleapis.com/v1/currentConditions:lookup?key=" + System.getenv("GOOGLE_CLOUD_API_KEY") + "&location.latitude=" + latitude + "&location.longitude=" + longitude;
 
         String data = null;
         try (HttpClient client = HttpClient.newHttpClient()) {
@@ -89,9 +88,9 @@ public class MultiToolAgent {
             System.out.println("Error: " + e.getMessage());
         }
 
-        if(data != null) {
+        if (data != null) {
             return Map.of("status", "success", "report", data);
-        }else{
+        } else {
             return Map.of("status", "error", "report", "Weather information not available");
         }
     }
